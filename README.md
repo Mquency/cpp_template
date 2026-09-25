@@ -56,7 +56,7 @@ Removes the entire `build/` directory.
 
 If you prefer not to use the template feature:
 
-    git clone https://github.com/YOUR_USERNAME/cpp_template.git my_project
+    git clone https://github.com/Mquency/cpp_template.git my_project
     cd my_project
     rm -rf .git
     git init
@@ -65,7 +65,7 @@ If you prefer not to use the template feature:
 
 ### Option 3: GitHub CLI
 
-    gh repo create my_project --template YOUR_USERNAME/cpp_template --public
+    gh repo create my_project --template Mquency/cpp_template --public
     cd my_project
 
 ## Adding New Files
