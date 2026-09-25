@@ -18,10 +18,23 @@ echo -e "${YELLOW}Cleaning up template files...${NC}"
 
 # List of files to remove
 FILES_TO_REMOVE=(
-    ".gitignore"
     "README.md"
     "header/.gitkeep"
 )
+
+# List of directories to remove
+DIRS_TO_REMOVE=()
+
+for arg in "$@"; do
+    case "$arg" in
+        --no-git)
+            echo "Removing git..."
+            FILES_TO_REMOVE+=(".gitignore")
+            DIRS_TO_REMOVE+=(".git")
+            break
+            ;;
+    esac
+done
 
 for file in "${FILES_TO_REMOVE[@]}"; do
     if [[ -f "$file" ]]; then
@@ -29,6 +42,15 @@ for file in "${FILES_TO_REMOVE[@]}"; do
         echo -e "${GREEN}  removed:${NC} $file"
     else
         echo -e "${RED}  skipped (not found):${NC} $file"
+    fi
+done
+
+for dir in "${DIRS_TO_REMOVE[@]}"; do
+    if [[ -d "$dir" ]]; then
+        rm -rf "$dir"
+        echo -e "${GREEN}  removed:${NC} $dir"
+    else
+        echo -e "${RED}  skipped (not found):${NC} $dir"
     fi
 done
 

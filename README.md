@@ -22,6 +22,9 @@ Build artifacts are generated automatically under `build/out/`.
 ## Fresh start
 
     ./use.sh
+### No git
+
+    ./use.sh --no-git
 
 ## Build
 
