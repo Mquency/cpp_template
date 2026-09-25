@@ -25,12 +25,31 @@ Build artifacts are generated automatically under `build/out/`.
 ### No git
 
     ./use.sh --no-git
+### Reset
+
+    make reset
+### Clean directory
+
+    make nuke
+
+or if you just use the Makefile in your projects:
+## Init
+
+    make init
+
+This will add source and header directory to your project.
 
 ## Build
 
     make
 
 The executable is created at `build/app`.
+
+## Rebuild
+
+    make rebuild
+
+Cleans and rebuilds the project.
 
 ## Run
 
