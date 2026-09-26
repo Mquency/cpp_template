@@ -13,18 +13,21 @@ TARGET		:= $(BUILD_DIR)/app
 
 # Toolchain
 CXX			:= g++
-HXX			:= hpp
+HFL			:= hpp
+CFL			:= cpp
+STD_NUM		:= ++23
+STD			:= c$(STD_NUM)
 
 # Flags
-STD_FLAGS	:= -std=c++20
+STD_FLAGS	:= -std=$(STD)
 WARN_FLAGS	:= -Wall -Wextra
 INC_FLAGS	:= -I$(HDR_DIR)
 
 CXXFLAGS	:= $(STD_FLAGS) $(WARN_FLAGS) $(INC_FLAGS)
 
 # Find all source files and derive object files
-SRCS		:= $(wildcard $(SRC_DIR)/*.cpp)
-OBJS		:= $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
+SRCS		:= $(wildcard $(SRC_DIR)/*.$(CFL))
+OBJS		:= $(patsubst $(SRC_DIR)/%.$(CFL), $(OBJ_DIR)/%.o, $(SRCS))
 HDRS		:= $(wildcard $(HDR_DIR)/*.$(HXX))
 
 
@@ -47,7 +50,7 @@ $(TARGET): $(OBJS)
 	@chmod +x $@
 
 # Compile
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(HDRS)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.$(CFL) $(HDRS)
 	@if [ ! -d $(OBJ_DIR) ]; then \
 		mkdir -p $(OBJ_DIR) && echo "Creating objects directory at: $(OBJ_DIR)"; \
 	fi
@@ -74,26 +77,39 @@ init:
 	@if [ ! -d $(SRC_DIR) ]; then \
 		mkdir -p $(SRC_DIR) && echo "Creating source files directory named: $(SRC_DIR)"; \
 	else \
-		if [ ! -f "$(SRC_DIR)/main.cpp" ]; then \
-			echo "Creating default program at: $(SRC_DIR)/main.cpp"; \
-			touch $(SRC_DIR)/main.cpp; \
+		if [ ! -f "$(SRC_DIR)/main.$(CFL)" ]; then \
+			echo "Creating default program at: $(SRC_DIR)/main.$(CFL)"; \
+			touch $(SRC_DIR)/main.$(CFL); \
 		else \
 			exit 0; \
 		fi \
 	fi
 
 	@echo "Hello, world!  :)"
-	@printf '%s\n' \
-	'#include <iostream>' \
-	'using namespace std;' \
-	'' \
-	'int main(){' \
-	'' \
-	'    cout << "Hello, world!" << endl;' \
-	'' \
-	'    return 0;' \
-	'}' \
-	> $(SRC_DIR)/main.cpp
+	@if [ -f "$(SRC_DIR)/main.cpp" ]; then \
+	    printf '%s\n' \
+		'#include <iostream>' \
+		'using namespace std;' \
+		'' \
+		'int main(){' \
+		'' \
+		'    cout << "Hello, world!" << endl;' \
+		'' \
+		'    return 0;' \
+		'}' \
+		> $(SRC_DIR)/main.cpp; \
+	elif [ -f "$(SRC_DIR)/main.c" ]; then \
+	    printf '%s\n' \
+		'#include <stdio.h>' \
+		'' \
+		'int main(){' \
+		'' \
+		'    printf("Hello, world!\n");' \
+		'' \
+		'    return 0;' \
+		'}' \
+		> $(SRC_DIR)/main.c; \
+	fi
 
 # Nukes the source files
 nuke: clean
