@@ -13,6 +13,7 @@ TARGET		:= $(BUILD_DIR)/app
 
 # Toolchain
 CXX			:= g++
+HXX			:= hpp
 
 # Flags
 STD_FLAGS	:= -std=c++20
@@ -24,7 +25,7 @@ CXXFLAGS	:= $(STD_FLAGS) $(WARN_FLAGS) $(INC_FLAGS)
 # Find all source files and derive object files
 SRCS		:= $(wildcard $(SRC_DIR)/*.cpp)
 OBJS		:= $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
-HDRS		:= $(wildcard $(HDR_DIR)/*.hpp)
+HDRS		:= $(wildcard $(HDR_DIR)/*.$(HXX))
 
 
 # =======
